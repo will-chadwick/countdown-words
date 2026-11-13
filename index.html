@@ -1,9 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="refresh" content="0; URL='nine_words.html'" />
+    <meta charset="UTF-8">
+    <title>9-Letter Word Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background: #f4f4f9; }
+        #word-box { font-size: 28px; font-weight: bold; margin: 20px; color: #333; }
+        button { padding: 12px 24px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+    </style>
 </head>
 <body>
-  <p>Redirecting…</p>
+
+    <h1>9-Letter Word Game</h1>
+    <p id="status">Loading words from file...</p>
+    <div id="word-box">-</div>
+    <button onclick="getRandomWord()">Get Random Word</button>
+
+    <script>
+        let words = [];
+
+        // This automatically reads your text file
+        fetch('nine_letter_words.txt')
+            .then(response => response.text())
+            .then(data => {
+                words = data.split('\n').map(w => w.trim()).filter(w => w.length > 0);
+                document.getElementById('status').innerText = "Loaded " + words.length + " words successfully!";
+            })
+            .catch(error => {
+                document.getElementById('status').innerText = "Error: Could not find 'nine_letter_words.txt'. Make sure it's in the same folder!";
+                console.error(error);
+            });
+
+        function getRandomWord() {
+            if (words.length === 0) {
+                alert("Words are still loading, please wait a moment!");
+                return;
+            }
+            const randomIndex = Math.floor(Math.random() * words.length);
+            document.getElementById('word-box').innerText = words[randomIndex];
+        }
+    </script>
+
 </body>
 </html>
